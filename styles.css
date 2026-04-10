@@ -1,0 +1,238 @@
+/* ── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --green-50:  #ecfdf5;
+  --green-100: #d1fae5;
+  --green-200: #a7f3d0;
+  --green-300: #6ee7b7;
+  --green-400: #34d399;
+  --green-500: #10b981;
+  --green-600: #059669;
+  --green-700: #047857;
+  --green-800: #065f46;
+  --green-900: #064e3b;
+  --green-950: #022c22;
+
+  --bg-body:    linear-gradient(160deg, #022c22 0%, #064e3b 40%, #047857 100%);
+  --bg-calc:    #0a2e1f;
+  --bg-display: #021a12;
+  --text-primary: #ecfdf5;
+  --text-muted:   #6ee7b7;
+  --shadow-lg:  0 25px 60px rgba(0, 0, 0, .5), 0 0 80px rgba(16, 185, 129, .12);
+  --radius:     16px;
+  --radius-sm:  12px;
+  --gap:        10px;
+  --font:       'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg-body);
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Calculator Shell ────────────────────────────────── */
+.calculator {
+  width: 100%;
+  max-width: 360px;
+  background: var(--bg-calc);
+  border-radius: var(--radius);
+  border: 1px solid rgba(16, 185, 129, .2);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  padding: var(--gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+/* ── Display ─────────────────────────────────────────── */
+.display {
+  background: var(--bg-display);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(16, 185, 129, .15);
+  padding: 1.25rem 1.5rem;
+  text-align: right;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: .35rem;
+  overflow: hidden;
+}
+
+.display-expression {
+  font-size: .95rem;
+  color: var(--text-muted);
+  min-height: 1.3em;
+  word-break: break-all;
+  opacity: .8;
+}
+
+.display-value {
+  font-size: 2.75rem;
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  word-break: break-all;
+  transition: font-size .15s ease;
+}
+
+.display-value.shrink {
+  font-size: 2rem;
+}
+
+.display-value.shrink-more {
+  font-size: 1.5rem;
+}
+
+/* ── Keypad Grid ─────────────────────────────────────── */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn {
+  appearance: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 1.35rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .12s ease, transform .1s ease, box-shadow .12s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.btn:active::after {
+  opacity: 1;
+}
+
+.btn:active {
+  transform: scale(.95);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--green-400);
+  outline-offset: 2px;
+}
+
+/* Number buttons */
+.btn-num {
+  background: linear-gradient(180deg, #0f3d2a 0%, #0a2e1f 100%);
+  color: var(--text-primary);
+  border: 1px solid rgba(16, 185, 129, .12);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+}
+
+.btn-num:hover {
+  background: linear-gradient(180deg, #135c3e 0%, #0f3d2a 100%);
+  border-color: rgba(16, 185, 129, .25);
+}
+
+/* Utility buttons (AC, ⌫, %) */
+.btn-util {
+  background: linear-gradient(180deg, #115e45 0%, #0d4a37 100%);
+  color: var(--green-200);
+  border: 1px solid rgba(16, 185, 129, .2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+  font-size: 1.15rem;
+}
+
+.btn-util:hover {
+  background: linear-gradient(180deg, #148a64 0%, #115e45 100%);
+  border-color: rgba(16, 185, 129, .35);
+}
+
+/* Operator buttons */
+.btn-op {
+  background: linear-gradient(180deg, var(--green-600) 0%, var(--green-700) 100%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .1);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, .4);
+  font-size: 1.5rem;
+}
+
+.btn-op:hover {
+  background: linear-gradient(180deg, var(--green-500) 0%, var(--green-600) 100%);
+  box-shadow: 0 2px 12px rgba(16, 185, 129, .5);
+}
+
+.btn-op.active {
+  background: linear-gradient(180deg, var(--green-400) 0%, var(--green-500) 100%);
+  box-shadow: 0 0 20px rgba(52, 211, 153, .5);
+}
+
+/* Equals button */
+.btn-eq {
+  background: linear-gradient(180deg, var(--green-400) 0%, var(--green-500) 100%);
+  color: var(--green-950);
+  font-weight: 700;
+  font-size: 1.6rem;
+  border: 1px solid rgba(255, 255, 255, .15);
+  box-shadow: 0 2px 12px rgba(52, 211, 153, .4);
+}
+
+.btn-eq:hover {
+  background: linear-gradient(180deg, var(--green-300) 0%, var(--green-400) 100%);
+  box-shadow: 0 4px 20px rgba(52, 211, 153, .5);
+}
+
+/* Zero spans two columns */
+.btn-zero {
+  grid-column: span 2;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 400px) {
+  .calculator {
+    max-width: 100%;
+  }
+  .btn {
+    height: 56px;
+    font-size: 1.2rem;
+  }
+  .display-value {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 500px) {
+  .btn {
+    height: 72px;
+  }
+}
